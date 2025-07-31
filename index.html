@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>To-do List</title>
+</head>
+<body>
+  <div class="todo-container">
+
+    <header>
+      <h1>todos</h1>
+    </header>
+
+    <form class="search-form">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="search" class="search" placeholder="Search todos">
+      </div>
+    </form>
+
+    <button class="random-picker-btn">
+      <i class="fas fa-dice"></i> Pick for Me
+    </button>
+
+    <ul class="todos">
+    </ul>
+
+    <form class="add-todo">
+      <div class="add-wrapper">
+        <i class="fas fa-plus"></i>
+        <input type="text" class="add" name="add" placeholder="Add a new todo..." autofocus>
+      </div>
+    </form>
+
+    <p class="no-todos"></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
