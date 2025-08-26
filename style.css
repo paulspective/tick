@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #1e003d;
+  background-color: #352f5b;
   padding: 2rem 1rem;
   display: flex;
   align-items: center;
@@ -24,14 +24,15 @@ body {
 header h1 {
   font-size: 8rem;
   letter-spacing: 1.5px;
-  color: rgba(179, 131, 226, 0.2);
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 0.7;
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
 .search-form {
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .search {
@@ -41,32 +42,13 @@ header h1 {
   font-size: 1rem;
   font-weight: bold;
   padding: 0.85rem 1rem;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
   border: none;
-  border-radius: 4px;
-  background-color: rgba(225, 225, 255, 0.1);
-  color: #eee;
-  border-bottom: 2px solid transparent;
   outline: none;
   z-index: 1;
-  transition: border-bottom 0.3s ease;
-}
-
-.search::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  background-color: #4c447d;
-  transform: translateY(-6px);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.search:focus::after {
-  transform: translateY(0);
-  opacity: 1;
+  transition: box-shadow 0.3s ease;
 }
 
 .search-wrapper {
@@ -88,14 +70,50 @@ header h1 {
   padding-left: 2.2rem;
 }
 
-.search::placeholder {
+::placeholder {
   font-weight: 400;
   color: #ccc;
 }
 
 .search:focus {
-  border-bottom: 2px solid #4c447d;
+  box-shadow: 0 0 0 2px rgba(179, 131, 226, 0.5), 0 0 10px rgba(179, 131, 226, 0.4);
   outline: none;
+}
+
+.context-menu {
+  position: absolute;
+  display: none;
+  background-color: #352f5b;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.2rem 0.2rem;
+  width: 120px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.context-menu.show {
+  pointer-events: auto;
+  display: block;
+  opacity: 1;
+}
+
+.context-menu li {
+  list-style-type: none;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.context-menu li:hover {
+  border-radius: 2px;
+  background-color: #423a6f;
 }
 
 .random-picker-btn {
@@ -113,60 +131,49 @@ header h1 {
 }
 
 .random-picker-btn:hover {
-  background-color: #423a6f;
+  background: #52498f;
 }
 
-
-.glow {
-  animation: glowPulse 1s ease-in-out;
-}
-
-@keyframes glowPulse {
+@keyframes borderTrace {
   0% {
-    transform: scale(1);
-    box-shadow: 0 0 12px 4px rgba(179, 131, 226, 0.6);
-  }
-
-  50% {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px 6px rgba(179, 131, 226, 0.8);
-  }
-
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 12px 4px rgba(179, 131, 226, 0.6);
-  }
-}
-
-@keyframes shake {
-  0% {
-    transform: translateX(0);
+    border-top: 2px solid #b383e2;
+    border-right: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    border-left: 2px solid transparent;
   }
 
   25% {
-    transform: translateX(-4px);
+    border-top: 2px solid #b383e2;
+    border-right: 2px solid #b383e2;
   }
 
   50% {
-    transform: translateX(4px);
+    border-bottom: 2px solid #b383e2;
   }
 
   75% {
-    transform: translateX(-4px);
+    border-left: 2px solid #b383e2;
+  }
+
+  90% {
+    border: 2px solid #b383e2;
   }
 
   100% {
-    transform: translateX(0);
+    border: 2px solid transparent;
   }
 }
 
-.dice-shake {
-  animation: shake 1s ease;
+.border-trace {
+  animation: borderTrace 1.5s linear;
+  background: #52498f;
+
 }
 
 .todos {
   list-style: none;
   width: 100%;
+  max-width: 400px;
   padding: 0;
   margin: 0 0 5rem 0;
 }
@@ -176,16 +183,28 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #351f5b;
-  color: #fff;
+  background: #423a6f;
+  color: #f8f8f8;
   padding: 0.85rem 1rem;
-  margin-bottom: 2px;
-  border-radius: 4px;
+  margin-bottom: 1px;
+  border: 2px solid transparent;
   transition: background-color 0.2s ease;
 }
 
+.todo-item:first-child:last-child {
+  border-radius: 6px;
+}
+
+.todo-item:first-child {
+  border-radius: 6px 6px 0 0;
+}
+
+.todo-item:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
 .todo-item:hover {
-  background: #423a6f;
+  background: #52498f;
 }
 
 .todo-item span {
@@ -194,13 +213,14 @@ header h1 {
 
 .todo-item.removing span {
   text-decoration: line-through;
+  transform: scale(0.90);
   opacity: 0.2;
   transition: all 0.6s ease;
 }
 
 .todo-item i.delete {
+  color: #dc143c;
   cursor: pointer;
-  color: #f44336;
 }
 
 .add-todo {
@@ -210,12 +230,11 @@ header h1 {
   right: 0;
   margin: 0 auto;
   padding: 1rem;
-  background-color: #1e003d;
+  background-color: #352f5b;
   width: 100%;
   max-width: 430px;
   padding-bottom: 2rem;
   z-index: 10;
-  overflow: visible;
 }
 
 .add {
@@ -224,49 +243,19 @@ header h1 {
   font-size: 1rem;
   font-weight: bold;
   padding: 0.85rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background-color: rgba(225, 225, 255, 0.1);
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
   color: #eee;
   position: relative;
-  border-bottom: 2px solid transparent;
+  border: none;
   outline: none;
   z-index: 1;
-  transition: border-bottom 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
-.add::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  background-color: #4c447d;
-  transform: translateY(-6px);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.add:focus::after,
-.add.editing::after {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.add.editing {
-  border-bottom: 2px solid #b383e2;
-  animation: editPulse 0.5s ease;
-}
-
-@keyframes editPulse {
-  0% {
-    border-bottom-color: #4c447d;
-  }
-
-  100% {
-    border-bottom-color: #b383e2;
-  }
+.add:focus {
+  box-shadow: 0 0 0 2px rgba(179, 131, 226, 0.5), 0 0 10px rgba(179, 131, 226, 0.4);
+  outline: none;
 }
 
 .add-wrapper {
@@ -288,34 +277,18 @@ header h1 {
   padding-left: 2.2rem;
 }
 
-.add::placeholder {
-  color: #ccc;
-  font-weight: 400;
-}
-
-.add:focus {
-  border-bottom: 2px solid #4c447d;
-  outline: none;
-}
-
 .filtered {
   display: none;
 }
 
 .no-todos {
   display: none;
-  color: #ccc;
+  color: #fff;
   text-align: center;
 }
 
 @media (max-width: 500px) {
   header h1 {
     font-size: 7rem;
-  }
-
-  .add,
-  .search,
-  .todo-item {
-    font-size: 0.95rem;
   }
 }
