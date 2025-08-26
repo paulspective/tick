@@ -139,6 +139,7 @@ searchInput.addEventListener('input', () => {
       li.classList.remove('filtered');
       li.style.display = 'flex';
     });
+
     toggleNoTodosMessage();
     return;
   }
