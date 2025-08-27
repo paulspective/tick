@@ -22,10 +22,9 @@ body {
 }
 
 header h1 {
-  font-size: 8rem;
+  font-size: clamp(7rem, 15vw, 8rem);
   letter-spacing: 1.5px;
-  color: rgba(0, 0, 0, 0.5);
-  opacity: 0.7;
+  color: rgba(0, 0, 0, 0.4);
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -140,6 +139,7 @@ header h1 {
     border-right: 2px solid transparent;
     border-bottom: 2px solid transparent;
     border-left: 2px solid transparent;
+    background-color: #52498f;
   }
 
   25% {
@@ -161,13 +161,12 @@ header h1 {
 
   100% {
     border: 2px solid transparent;
+    background-color: #423a6f;
   }
 }
 
 .border-trace {
   animation: borderTrace 1.5s linear;
-  background: #52498f;
-
 }
 
 .todos {
@@ -285,10 +284,4 @@ header h1 {
   display: none;
   color: #fff;
   text-align: center;
-}
-
-@media (max-width: 500px) {
-  header h1 {
-    font-size: 7rem;
-  }
 }
