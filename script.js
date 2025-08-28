@@ -9,6 +9,7 @@ const menu = document.querySelector('.context-menu');
 
 let todoBeingEdited = null;
 
+// Create todo element 
 function createTodoElement(todoText) {
   const li = document.createElement('li');
   li.classList.add('todo-item');
@@ -27,6 +28,7 @@ function createTodoElement(todoText) {
   return li;
 };
 
+// Add/Edit Todo
 addForm.addEventListener('submit', e => {
   e.preventDefault();
   const todo = addInput.value.trim();
@@ -71,10 +73,12 @@ function toggleNoTodosMessage(message = 'No todos yet. Add one!') {
   noTodosMsg.textContent = message;
 }
 
+// Delete
 list.addEventListener('click', e => {
   if (e.target.classList.contains('delete')) deleteTodo(e.target.closest('li'));
 });
 
+// Context menu
 list.addEventListener('contextmenu', e => {
   e.preventDefault();
   const selectedItem = e.target.closest('li.todo-item');
@@ -106,6 +110,7 @@ list.addEventListener('contextmenu', e => {
   menu.style.visibility = 'visible';
 });
 
+// Hide menu & stop editing if clicking outside
 document.addEventListener('click', e => {
   if (!menu.contains(e.target) && !(todoBeingEdited && addForm.contains(e.target))) {
     menu.style.display = 'none';
@@ -114,6 +119,7 @@ document.addEventListener('click', e => {
   }
 });
 
+// Menu actions
 document.querySelector('.menu-edit').addEventListener('click', () => {
   menu.style.display = 'none';
   const todoItem = menu.relatedTodo;
@@ -130,7 +136,9 @@ document.querySelector('.menu-delete').addEventListener('click', () => {
   if (todoItem) deleteTodo(todoItem);
 });
 
+// Search 
 searchInput.addEventListener('input', () => {
+  addInput.classList.remove('editing');
   const term = searchInput.value.toLowerCase().trim();
   randomBtn.style.display = term ? 'none' : 'block';
 
@@ -156,6 +164,7 @@ searchInput.addEventListener('input', () => {
   if (!matchFound) noTodosMsg.textContent = 'No matching todo found.';
 });
 
+// Random picker
 randomBtn.addEventListener('click', () => {
   const pickableTodos = Array.from(list.children).filter(
     todo => !todo.classList.contains('filtered')
@@ -168,6 +177,7 @@ randomBtn.addEventListener('click', () => {
   randomTodo.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
+// LocalStorage 
 function saveTodos() {
   const todos = Array.from(list.children).map(li => li.querySelector('span').textContent);
   localStorage.setItem('todos', JSON.stringify(todos));
