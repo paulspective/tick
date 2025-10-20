@@ -16,6 +16,19 @@ const pickBtn = document.querySelector('.pick-btn');
 
 pickBtn.addEventListener('click', pickRandomTask);
 
+function updateTitle() {
+  const totalTasks = tasks.querySelectorAll('.task').length;
+  const incompleteTasks = tasks.querySelectorAll('.task input:not(:checked)').length;
+
+  if (totalTasks === 0) {
+    document.title = 'Tick — Your Simple To-Do App';
+  } else {
+    document.title = `Tick (${incompleteTasks}/${totalTasks}) — Your Simple To-Do App`;
+  }
+}
+
+tasks.addEventListener('change', updateTitle);
+
 function updateEmptyMessage() {
   if (tasks.children.length > 0) {
     emptyMsg.classList.remove('show');
@@ -26,7 +39,7 @@ function updateEmptyMessage() {
   }
 }
 
-function createTask(text) {
+function createTask(text, ticked = false) {
   const li = document.createElement('li');
   li.className = 'task';
   li.innerHTML = `
@@ -34,6 +47,13 @@ function createTask(text) {
     <span title="Double click to edit">${text}</span>
     <button class="delete-btn">&times;</button>
   `;
+
+  const checkbox = li.querySelector('input[type="checkbox"]');
+  checkbox.checked = ticked;
+
+  if (ticked) checkbox.dispatchEvent(new Event('change'));
+
+  checkbox.addEventListener('change', saveTasks);
 
   // delete button
   const delBtn = li.querySelector('.delete-btn');
@@ -43,6 +63,7 @@ function createTask(text) {
       li.remove();
       updateEmptyMessage();
       saveTasks();
+      updateTitle();
     }, 250);
   });
 
@@ -53,8 +74,13 @@ function createTask(text) {
 
 function saveTasks() {
   const taskArray = [];
-  tasks.querySelectorAll('.task span').forEach(span => {
-    taskArray.push(span.textContent);
+  tasks.querySelectorAll('.task').forEach(li => {
+    const span = li.querySelector('span');
+    const checkbox = li.querySelector('input[type="checkbox"]');
+    taskArray.push({
+      text: span.textContent,
+      ticked: checkbox.checked
+    });
   });
 
   localStorage.setItem('tasks', JSON.stringify(taskArray));
@@ -62,17 +88,21 @@ function saveTasks() {
 
 function loadTasks() {
   const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  savedTasks.forEach(taskText => {
-    createTask(taskText);
+  savedTasks.forEach(task => {
+    createTask(task.text, task.ticked);
   });
 }
 
 function pickRandomTask() {
-  const taskSpans = tasks.querySelectorAll('.task span');
+  const taskSpans = Array.from(tasks.querySelectorAll('.task')).filter(
+    li => !li.querySelector('input[type="checkbox"]').checked
+  ).map(li => li.querySelector('span'));
+
   if (taskSpans.length === 0) {
     alert('No tasks available to pick from!');
     return;
   }
+
   const randomIndex = Math.floor(Math.random() * taskSpans.length);
   alert(`How about: "${taskSpans[randomIndex].textContent}"`);
 }
@@ -107,7 +137,9 @@ addForm.addEventListener('submit', e => {
 
   createTask(inputText);
   addInput.value = '';
+  setTimeout(updateTitle, 0);
 });
 
+updateTitle();
 updateEmptyMessage();
 loadTasks();

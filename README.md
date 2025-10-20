@@ -7,6 +7,7 @@ A clean, simple, and elegant to-do list app designed to help you focus on what m
 * **Add & Manage Tasks** – Quickly add tasks by typing and pressing `Enter`.
 * **Mark as Complete** – Click the checkbox to mark tasks as done, with a satisfying strikethrough effect.
 * **Delete Tasks** – Remove tasks instantly with a smooth fade-out animation.
+* **Edit Tasks** – Double-click a task to edit inline; press `Enter` or blur to save, `Escape` to cancel.
 * **Random Task Picker** – Feeling indecisive? Click the dice icon to let Tick pick a task for you.
 * **Dynamic Empty State** – Fun and quirky messages appear when your to-do list is empty.
 * **Light & Dark Mode** – Automatically adapts to your system’s preferred color scheme.
