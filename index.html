@@ -3,45 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Tick</title>
   <link rel="stylesheet" href="style.css">
-  <title>Todo List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <body>
-  <div class="todo-container">
-    <header>
-      <h1>todos</h1>
-    </header>
 
-    <form class="search-form">
-      <div class="search-wrapper">
-        <i class="fas fa-search"></i>
-        <input type="search" class="search" placeholder="Search todos">
-      </div>
-    </form>
-
-    <button class="random-picker-btn">
-      <i class="fas fa-dice"></i> Pick for Me
+  <main class="tick">
+    <h1>Tick</h1>
+    <button class="pick-btn" title="Pick a task">
+      <i class="fas fa-dice"></i>
     </button>
 
-    <ul class="todos">
-    </ul>
-
-    <ul class="context-menu">
-      <li class="menu-edit">Edit</li>
-      <li class="menu-delete">Delete</li>
-    </ul>
-
-    <form class="add-todo">
-      <div class="add-wrapper">
-        <i class="fas fa-plus"></i>
-        <input type="text" class="add" name="add" placeholder="Add a new todo..." autofocus>
-      </div>
+    <form class="add-task">
+      <input type="text" class="add-input" placeholder="Add a task..." autofocus="on">
     </form>
 
-    <p class="no-todos"></p>
-  </div>
+    <ul class="tasks">
+      <!-- <li class="task"><input type="checkbox"><span>Example task</span></li> -->
+    </ul>
+
+    <p class="empty"></p>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>

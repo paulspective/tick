@@ -1,192 +1,58 @@
-const addForm = document.querySelector('.add-todo');
-const addInput = addForm.querySelector('.add');
-const searchInput = document.querySelector('.search');
-const list = document.querySelector('.todos');
-const noTodosMsg = document.querySelector('.no-todos');
-const randomBtn = document.querySelector('.random-picker-btn');
-const addIcon = document.querySelector('.add-wrapper i');
-const menu = document.querySelector('.context-menu');
+const emptyMessages = [
+  "Nothing here… yet. Let's tick something off?",
+  "All clear. Enjoy the calm.",
+  "Nothing to do. Maybe that's the point.",
+  "Your list is spotless.",
+  "A perfect moment for tea.",
+  "Empty list, empty mind.",
+  "You did it all? Or haven't started yet?"
+];
 
-let todoBeingEdited = null;
+const addForm = document.querySelector('.add-task');
+const addInput = document.querySelector('.add-input');
+const tasks = document.querySelector('.tasks');
+const emptyMsg = document.querySelector('.empty');
 
-// Create todo element 
-function createTodoElement(todoText) {
-  const li = document.createElement('li');
-  li.classList.add('todo-item');
-
-  const span = document.createElement('span');
-  span.textContent = todoText;
-
-  const deleteIcon = document.createElement('i');
-  deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete');
-
-  li.appendChild(span);
-  li.appendChild(deleteIcon);
-  list.appendChild(li);
-
-  saveTodos();
-  return li;
-};
-
-// Add/Edit Todo
-addForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const todo = addInput.value.trim();
-  if (!todo) return;
-
-  if (todoBeingEdited) {
-    const span = todoBeingEdited.querySelector('span');
-    if (span.textContent !== todo) span.textContent = todo;
-    stopEditing();
-    saveTodos();
+function updateEmptyMessage() {
+  if (tasks.children.length > 0) {
+    emptyMsg.classList.remove('show');
+    emptyMsg.textContent = '';
   } else {
-    createTodoElement(todo);
+    emptyMsg.textContent = emptyMessages[Math.floor(Math.random() * emptyMessages.length)];
+    emptyMsg.classList.add('show');
   }
-
-  addForm.reset();
-  toggleNoTodosMessage();
-});
-
-function deleteTodo(todoItem) {
-  todoItem.classList.add('removing');
-  setTimeout(() => {
-    todoItem.remove();
-    toggleNoTodosMessage();
-    saveTodos();
-  }, 600);
 }
 
-function startEditing() {
-  addIcon.classList.replace('fa-plus', 'fa-check');
-  addInput.classList.add('editing');
-}
+function createTask(text) {
+  const li = document.createElement('li');
+  li.className = 'task';
+  li.innerHTML = `
+    <input type="checkbox">
+    <span>${text}</span>
+    <button class="delete-btn">&times;</button>
+  `;
 
-function stopEditing() {
-  addIcon.classList.replace('fa-check', 'fa-plus');
-  addInput.classList.remove('editing');
-  todoBeingEdited = null;
-  addForm.reset();
-}
-
-function toggleNoTodosMessage(message = 'No todos yet. Add one!') {
-  noTodosMsg.style.display = list.children.length === 0 ? 'block' : 'none';
-  noTodosMsg.textContent = message;
-}
-
-// Delete
-list.addEventListener('click', e => {
-  if (e.target.classList.contains('delete')) deleteTodo(e.target.closest('li'));
-});
-
-// Context menu
-list.addEventListener('contextmenu', e => {
-  e.preventDefault();
-  const selectedItem = e.target.closest('li.todo-item');
-  if (!selectedItem) return;
-
-  menu.style.visibility = 'hidden';
-  menu.style.display = 'block';
-
-  todoBeingEdited = selectedItem;
-  menu.relatedTodo = selectedItem;
-
-  const menuWidth = menu.offsetWidth;
-  const menuHeight = menu.offsetHeight;
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-
-  let posX = e.clientX;
-  let posY = e.clientY;
-
-  if (posX + menuWidth > viewportWidth) posX -= menuWidth;
-  if (posY + menuHeight > viewportHeight) posY -= menuHeight;
-
-  posX = Math.max(0, Math.min(posX, viewportWidth - menuWidth));
-  posY = Math.max(0, Math.min(posY, viewportHeight - menuHeight));
-
-  menu.style.left = `${posX}px`;
-  menu.style.top = `${posY}px`;
-  menu.classList.add('show');
-  menu.style.visibility = 'visible';
-});
-
-// Hide menu & stop editing if clicking outside
-document.addEventListener('click', e => {
-  if (!menu.contains(e.target) && !(todoBeingEdited && addForm.contains(e.target))) {
-    menu.style.display = 'none';
-    menu.relatedTodo = null;
-    if (todoBeingEdited) stopEditing();
-  }
-});
-
-// Menu actions
-document.querySelector('.menu-edit').addEventListener('click', () => {
-  menu.style.display = 'none';
-  const todoItem = menu.relatedTodo;
-  if (!todoItem) return;
-
-  addInput.value = todoItem.querySelector('span').textContent.trim();
-  addInput.focus();
-  startEditing();
-});
-
-document.querySelector('.menu-delete').addEventListener('click', () => {
-  menu.style.display = 'none';
-  const todoItem = menu.relatedTodo;
-  if (todoItem) deleteTodo(todoItem);
-});
-
-// Search 
-searchInput.addEventListener('input', () => {
-  addInput.classList.remove('editing');
-  const term = searchInput.value.toLowerCase().trim();
-  randomBtn.style.display = term ? 'none' : 'block';
-
-  if (!term) {
-    Array.from(list.children).forEach(li => {
-      li.classList.remove('filtered');
-      li.style.display = 'flex';
-    });
-
-    toggleNoTodosMessage();
-    return;
-  }
-
-  let matchFound = false;
-  Array.from(list.children).forEach(todo => {
-    const match = todo.textContent.toLowerCase().includes(term);
-    todo.classList.toggle('filtered', !match);
-    todo.style.display = match ? 'flex' : 'none';
-    if (match) matchFound = true;
+  // delete button
+  const delBtn = li.querySelector('.delete-btn');
+  delBtn.addEventListener('click', () => {
+    li.classList.add('fade-out');
+    setTimeout(() => {
+      li.remove();
+      updateEmptyMessage();
+    }, 250);
   });
 
-  noTodosMsg.style.display = matchFound ? 'none' : 'block';
-  if (!matchFound) noTodosMsg.textContent = 'No matching todo found.';
-});
-
-// Random picker
-randomBtn.addEventListener('click', () => {
-  const pickableTodos = Array.from(list.children).filter(
-    todo => !todo.classList.contains('filtered')
-  );
-  if (!pickableTodos.length) return alert('Nothing to surprise you with. Add a todo first!');
-
-  pickableTodos.forEach(todo => todo.classList.remove('border-trace'));
-  const randomTodo = pickableTodos[Math.floor(Math.random() * pickableTodos.length)];
-  randomTodo.classList.add('border-trace');
-  randomTodo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
-
-// LocalStorage 
-function saveTodos() {
-  const todos = Array.from(list.children).map(li => li.querySelector('span').textContent);
-  localStorage.setItem('todos', JSON.stringify(todos));
+  tasks.append(li);
+  updateEmptyMessage();
 }
 
-function loadTodos() {
-  const todos = JSON.parse(localStorage.getItem('todos')) || [];
-  todos.forEach(todo => createTodoElement(todo));
-  toggleNoTodosMessage();
-}
+addForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const inputText = addInput.value.trim();
+  if (!inputText) return;
 
-loadTodos();
+  createTask(inputText);
+  addInput.value = '';
+});
+
+updateEmptyMessage();
