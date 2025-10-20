@@ -205,3 +205,15 @@ h1 {
   transform: scale(1.2);
   opacity: 1;
 }
+
+.edit-input {
+  flex: 1;
+  font-size: 1rem;
+  border: none;
+  outline: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  background: transparent;
+  color: var(--text-color);
+  transition: outline 0.2s ease, background 0.2s ease;
+}
