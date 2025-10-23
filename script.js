@@ -117,16 +117,16 @@ tasks.addEventListener('dblclick', e => {
     span.replaceWith(input);
     input.focus();
 
-    input.addEventListener('blur', () => {
-      input.replaceWith(span);
-    });
+    const handleBlur = () => input.replaceWith(span);
+    input.addEventListener('blur', handleBlur);
 
     input.addEventListener('keydown', ev => {
       if (ev.key === 'Enter') {
+        input.removeEventListener('blur', handleBlur); // stops the blur from firing
         span.textContent = input.value.trim() || span.textContent;
         input.replaceWith(span);
         saveTasks();
-      };
+      }
       if (ev.key === 'Escape') input.blur();
     });
   }
