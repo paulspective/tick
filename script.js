@@ -69,7 +69,7 @@ function createTask(text, ticked = false) {
 
   tasks.appendChild(li);
   updateEmptyMessage();
-  saveTasks();
+  setTimeout(saveTasks, 300);
 }
 
 function saveTasks() {
@@ -118,14 +118,16 @@ tasks.addEventListener('dblclick', e => {
     input.focus();
 
     input.addEventListener('blur', () => {
-      span.textContent = input.value.trim() || span.textContent;
       input.replaceWith(span);
-      saveTasks();
     });
 
     input.addEventListener('keydown', ev => {
-      if (ev.key === 'Enter') input.blur();
-      if (ev.key === 'Escape') input.replaceWith(span);
+      if (ev.key === 'Enter') {
+        span.textContent = input.value.trim() || span.textContent;
+        input.replaceWith(span);
+        saveTasks();
+      };
+      if (ev.key === 'Escape') input.blur();
     });
   }
 });
