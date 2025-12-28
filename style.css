@@ -1,0 +1,223 @@
+:root {
+  --bg-color: #f5f5f3;
+  --text-color: #222;
+  --card-bg: #fff;
+  --card-shadow: rgba(0, 0, 0, 0.04);
+  --accent: #8e7dff;
+  --accent-dark: #7c6deb;
+  --muted: #777;
+  --border-color: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1d1d1d;
+    --text-color: #f1f1f1;
+    --card-bg: #2a2a2a;
+    --card-shadow: rgba(0, 0, 0, 0.3);
+    --accent: #b19eff;
+    --accent-dark: #a091ff;
+    --muted: #999;
+    --border-color: #555;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.tick {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  color: var(--text-color);
+}
+
+.tasks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 2px 6px var(--card-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  animation: fadeIn 0.3s ease;
+}
+
+.task:hover {
+  box-shadow: 0 4px 10px var(--card-shadow);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.task input[type="checkbox"]:hover {
+  border-color: var(--accent);
+}
+
+.task input[type="checkbox"]:checked {
+  background: radial-gradient(circle at center, var(--accent) 40%, var(--accent-dark) 100%);
+  border-color: transparent;
+}
+
+.task input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: 5px;
+  height: 10px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+.task span {
+  flex: 1;
+  font-size: 1rem;
+  min-width: 0;
+  max-width: 100%;
+  text-align: left;
+}
+
+.task input[type="checkbox"]:checked+span {
+  text-decoration: line-through;
+  color: var(--muted);
+  opacity: 0.7;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.task.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.add-task {
+  margin-top: 1.5rem;
+}
+
+.add-task .add-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: none;
+  border-radius: 14px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 4px var(--card-shadow);
+  font-size: 1rem;
+  color: var(--text-color);
+  outline: none;
+  margin-bottom: 2.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.add-task .add-input:focus {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.empty {
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 2rem;
+  opacity: 0;
+  font-size: 0.95rem;
+  transition: opacity 0.3s ease;
+}
+
+.empty.show {
+  opacity: 1;
+}
+
+.pick-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pick-btn:active {
+  transform: scale(0.90);
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.7;
+}
+
+.delete-btn:hover {
+  color: var(--accent);
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+.edit-input {
+  flex: 1;
+  font-size: 1rem;
+  border: none;
+  outline: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  background: transparent;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--text-color);
+  transition: outline 0.2s ease, background 0.2s ease;
+}
